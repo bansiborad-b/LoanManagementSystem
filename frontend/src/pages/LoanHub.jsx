@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useRef } from "react";
+import Footer from "../components/Footer";
 
 const LoanHub = () => {
   const navigate = useNavigate();
@@ -34,11 +35,13 @@ const LoanHub = () => {
   }
 
   return (
-    <div className="overflow-y-auto no-scrollbar h-screen">
+    <div className="overflow-y-auto no-scrollbar h-screen bg-gray-50">
       <Navbar />
       <div className="flex justify-center items-center h-[80vh]">
         <h1 className="text-black text-2xl">LoanHub</h1>
       </div>
+
+      <Footer />
     </div>
   );
 };

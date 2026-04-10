@@ -1,9 +1,8 @@
-import{ useState } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import men from "../assets/image.png";
 import { useEffect } from "react";
-import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import {
   Wallet,
   FileText,
@@ -11,8 +10,8 @@ import {
   User,
   ChevronRight,
   ChevronDown,
-  X,
 } from "lucide-react";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -100,22 +99,6 @@ const Home = () => {
         "Explore loan options and estimate your EMIs quickly. Make smarter borrowing decisions with confidence.",
       action: "Explore Loans",
       icon: <User className="w-8 h-8 text-black" />,
-    },
-  ];
-
-  const service = [
-    { name: "Government Schemes", path: "/schemes" },
-    { name: "Financial Consultancy", path: "/consultancy" },
-    { name: "Budget Planning", path: "/budgeting" },
-    { name: "Loan Management", path: "/loan-hub" },
-  ];
-
-  const contact = [
-    { name: "+91 1234567890", path: "tel:+911234567890" },
-    { name: "bansiborad@gmail.com", path: "mailto:bansiborad@gmail.com" },
-    {
-      name: "LDCE, University Area, Ahmedabad, 380009",
-      path: "https://www.google.com/maps?q=LD+College+of+Engineering+Ahmedabad",
     },
   ];
 
@@ -284,98 +267,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* about */}
-      <section className="bg-black text-white px-6 md:px-20 mb-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* LEFT (50%) */}
-          <div className="flex flex-col justify-start">
-            <h2 className="text-3xl sm:text-4xl font-semibold mb-4">
-              Fintech Services
-            </h2>
-
-            <p className="text-gray-400 text-sm sm:text-base mb-6 max-w-md">
-              Empowering your financial journey with innovative solutions and
-              expert guidance.
-            </p>
-
-            <div className="flex justify-start items-center gap-5">
-              {/* Facebook */}
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:scale-110 transition"
-              >
-                <FaFacebook className="w-6 h-6 text-white" />
-              </a>
-
-              {/* X (Twitter) */}
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:scale-110 transition"
-              >
-                <X className="w-6 h-6 text-white" />
-              </a>
-
-              {/* LinkedIn */}
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:scale-110 transition"
-              >
-                <FaLinkedin className="w-6 h-6 text-white" />
-              </a>
-            </div>
-          </div>
-
-          {/* RIGHT (50%) */}
-          <div className="grid grid-cols-2 gap-10">
-            {/* SERVICES (25%) */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold mb-4">
-                Explore Our Services
-              </h3>
-
-              {service.map((item, i) => (
-                <Link
-                  key={i}
-                  to={item.path}
-                  className="block text-gray-300 hover:text-white transition"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-
-            {/* CONTACT (25%) */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold mb-4">Contact</h3>
-
-              {contact.map((item, i) => (
-                <Link
-                  key={i}
-                  to={item.path}
-                  className="block text-gray-300 hover:text-white transition"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 🔹 FOOTER */}
-      <footer className="border-t border-gray-800 px-6 py-10 mb-2 text-center">
-        <div className="flex flex-col items-center space-y-3">
-          <p className="text-gray-400 text-base">
-            © {new Date().getFullYear()} FinTech Services. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      {/* footer */}
+      <Footer />
     </div>
   );
 };
