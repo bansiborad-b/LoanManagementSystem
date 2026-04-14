@@ -47,13 +47,13 @@ const Footer = ({ theme = "dark"}) => {
 
             <div className="flex gap-5">
               <a href="https://facebook.com" target="_blank" rel="noreferrer">
-                <FaFacebook className="w-6 h-6" />
+                <FaFacebook className="w-6 h-6 hover:scale-105 transition-transform duration-200" />
               </a>
               <a href="https://x.com" target="_blank" rel="noreferrer">
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 hover:scale-105 transition-transform duration-200" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noreferrer">
-                <FaLinkedin className="w-6 h-6" />
+                <FaLinkedin className="w-6 h-6 hover:scale-105 transition-transform duration-200" />
               </a>
             </div>
           </div>

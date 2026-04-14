@@ -35,7 +35,7 @@ const Login = () => {
   try {
     const res = await loginUser(formData);
 
-    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.accessToken);
     localStorage.setItem("user", JSON.stringify(res.data.user));
 
     toast.success("Login Successful")

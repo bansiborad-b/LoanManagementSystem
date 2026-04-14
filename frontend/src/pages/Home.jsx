@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Footer from "../components/Footer";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,6 +25,28 @@ const Home = () => {
       navigate("/schemes");
     }
   }, []);
+
+  const handleProtectedNavigation = (path) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    toast.error("Please login first");
+    navigate("/login");
+  } else {
+    navigate(path);
+  }
+};
+
+const handleServiceClick = (path) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    toast.error("Please login first");
+    navigate("/home");
+  } else {
+    navigate(path);
+  }
+};
 
   const faqData = [
     {
@@ -77,6 +100,7 @@ const Home = () => {
       description:
         "Access various government financial support programs for rural students, businesswomen, and farmers.",
       action: "Learn More",
+      path: "/schemes",
       icon: <FileText className="w-8 h-8 text-black" />,
     },
     {
@@ -84,6 +108,7 @@ const Home = () => {
       description:
         "Get expert advice from our financial consultants to make informed decisions about your investments.",
       action: "Book a Session",
+       path: "/consultancy",
       icon: <Wallet className="w-8 h-8 text-black" />,
     },
     {
@@ -91,6 +116,7 @@ const Home = () => {
       description:
         "Track your expenses, set financial goals, and manage your budget effectively with our tools.",
       action: "Start Planning",
+       path: "/budgeting",
       icon: <BarChart3 className="w-8 h-8 text-black" />,
     },
     {
@@ -98,6 +124,7 @@ const Home = () => {
       description:
         "Explore loan options and estimate your EMIs quickly. Make smarter borrowing decisions with confidence.",
       action: "Explore Loans",
+       path: "/loan-hub",
       icon: <User className="w-8 h-8 text-black" />,
     },
   ];
@@ -124,11 +151,11 @@ const Home = () => {
 
           {/* BUTTONS */}
           <div className="flex gap-4">
-            <button className="bg-white text-black px-6 py-2 rounded-lg font-medium hover:bg-gray-200 transition">
+            <button  onClick={() => handleProtectedNavigation("/loan-hub")} className="bg-white text-black px-6 py-2 rounded-lg font-medium hover:bg-gray-200  hover:scale-105 transition-transform duration-200">
               Get a Loan
             </button>
 
-            <button className="border border-gray-500 px-6 py-2 rounded-lg hover:border-white hover:text-white transition">
+            <button  onClick={() => handleProtectedNavigation("/consultancy")} className="border border-gray-500 px-6 py-2 rounded-lg hover:border-white hover:text-white hover:scale-105 transition-transform duration-200">
               Book Consultation
             </button>
           </div>
@@ -169,7 +196,8 @@ const Home = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="border border-gray-700 rounded-xl p-6 hover:border-white transition group flex gap-5"
+              onClick={() => handleServiceClick(service.path)}
+              className="border border-gray-700 rounded-xl p-6 hover:border-white  group flex gap-5 hover:scale-105 transition-transform duration-200"
             >
               {/* ICON */}
               <div className="bg-white px-2 py-3 h-14 rounded-md">
@@ -209,10 +237,11 @@ const Home = () => {
           {/* BUTTONS */}
           <div className="flex flex-col sm:flex-row gap-4">
             <button
+            onClick={() => handleProtectedNavigation("/home")}
               className="bg-black text-white px-10 py-3 rounded-lg font-medium 
-    hover:bg-gray-800 
+    
     active:scale-95 
-    transition duration-200"
+    hover:scale-105 transition-transform duration-200"
             >
               Get Started
             </button>
@@ -221,7 +250,7 @@ const Home = () => {
               className="border border-black px-10 py-3 rounded-lg font-medium 
     hover:bg-black hover:text-white 
     active:scale-95 
-    transition duration-200"
+    hover:scale-105 transition-transform duration-200"
             >
               Learn More
             </button>

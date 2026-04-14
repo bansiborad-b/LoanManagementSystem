@@ -47,7 +47,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-black text-white border-b border-gray-800">
       <div className="max-w-8xl mx-auto px-4 md:px-14 py-3 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3">
+        <Link to="/" className="flex items-center space-x-3 hover:scale-105 transition-transform duration-200">
           <img
             src={logo}
             alt="FinTech"
@@ -59,11 +59,11 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden xl:flex space-x-[60px] text-base relative">
           {menuItems.map((item) => (
-            <NavLink key={item.name} to={item.path} className="relative group">
+            <NavLink key={item.name} to={item.path} className="relative group hover:scale-105 transition-transform duration-200">
               {({ isActive }) => (
                 <>
                   <span
-                    className={`transition ${
+                    className={` hover:scale-105 transition-transform duration-200 ${
                       isActive ? "text-white" : "text-gray-300"
                     }`}
                   >
