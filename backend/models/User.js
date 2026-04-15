@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: true, // 🔥 important (except OAuth users)
+      required: true,
     },
 
     role: {
@@ -30,10 +30,30 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    managerRequest: {
+      status: {
+        type: String,
+        enum: [
+          "none",
+          "pending",
+          "interview_scheduled",
+          "approved",
+          "rejected",
+        ],
+        default: "none",
+      },
+      videoLink: {
+        type: String,
+        default: "",
+      },
+      interviewTime: {
+        type: Date,
+      },
+    },
   },
   {
     timestamps: true, // adds createdAt & updatedAt
-  }
+  },
 );
 
 export default mongoose.model("User", userSchema);

@@ -104,8 +104,8 @@ const Register = () => {
             <select name='role' onChange={handleChange}
               className="w-full mt-1 px-3 sm:px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-white transition"
             >
-              <option value="user">User</option>
-              <option value="manager">Manager</option>
+              <option value="User">User</option>
+              <option value="Manager">Manager</option>
             </select>
           </div>
 

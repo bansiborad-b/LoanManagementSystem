@@ -63,9 +63,41 @@ const generateRefreshToken = (user) => {
 //   }
 // };
 
+// export const registerUser = async (req, res) => {
+//   try {
+//     const { name, email, password } = req.body;
+
+//     if (!name || !email || !password) {
+//       return res.status(400).json({ message: "All fields required" });
+//     }
+
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       return res.status(400).json({ message: "User already exists" });
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     await User.create({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       role: "User", 
+//     });
+
+//     res.status(201).json({
+//       message: "User registered successfully",
+//     });
+
+//   } catch (error) {
+//     console.log("REGISTER ERROR:", error);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields required" });
@@ -78,19 +110,26 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // 🔥 Allowed roles (NO ADMIN from frontend)
+    let userRole = "User";
+
+    if (role && role === "Manager") {
+      userRole = "Manager";
+    }
+
     await User.create({
       name,
       email,
       password: hashedPassword,
-      role: "User", 
+      role: userRole,
     });
 
     res.status(201).json({
+      success: true,
       message: "User registered successfully",
     });
 
   } catch (error) {
-    console.log("REGISTER ERROR:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -179,24 +218,33 @@ export const refreshToken = async (req, res) => {
 // LOGOUT
 export const logoutUser = async (req, res) => {
   try {
+    
     const token = req.cookies.refreshToken;
 
     if (token) {
-      const decoded = jwt.verify(token, process.env.REFRESH_SECRET);
-      const user = await User.findById(decoded.id);
+      try {
+        const decoded = jwt.verify(token, process.env.REFRESH_SECRET);
 
-      if (user) {
-        user.refreshToken = null;
-        await user.save();
+        const user = await User.findById(decoded.id);
+
+        if (user) {
+          user.refreshToken = null;
+          await user.save();
+        }
+      } catch (err) {
+        // 🔥 ignore invalid token
+        console.log("Token already invalid or user deleted");
       }
     }
 
     res.clearCookie("refreshToken");
 
-    res.status(200).json({ message: "Logout Successful" });
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
 
   } catch (err) {
-    console.log(err.message);
-    res.status(500).json({ message: "Logout Failed" });
+    res.status(500).json({ message: "Logout failed" });
   }
 };
