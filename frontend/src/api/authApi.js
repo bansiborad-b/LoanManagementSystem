@@ -12,8 +12,8 @@ export const loginUser = (data) => {
 
 // Logout API
 export const logoutUser = () => {
-    return API.post("/auth/logout")
-}
+  return API.post("/auth/logout");
+};
 
 // 🔐 FORGOT PASSWORD
 export const forgotPassword = (email) => {
@@ -29,3 +29,15 @@ export const resetPassword = (token, password) => {
 export const refreshToken = () => {
   return API.post("/auth/refresh");
 };
+
+// ✅ Send OTP
+export const sendOTP = (mobile) => {
+  return API.post("/auth/send-otp", { mobile });
+};
+
+// ✅ Verify OTP
+export const verifyOTP = (data) => {
+  return API.post("/auth/verify-otp", data);
+};
+
+

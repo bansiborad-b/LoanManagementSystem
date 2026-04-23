@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useRef } from "react";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 
 const LoanHub = () => {
   const navigate = useNavigate();

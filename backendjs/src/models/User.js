@@ -39,6 +39,11 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
 
+    mobile: {
+      type: String,
+      unique: true,
+    },
+
     managerRequest: {
       status: {
         type: String,
