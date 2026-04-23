@@ -22,6 +22,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    mobile: "",
     password: "",
     role: "",
     confirmPassword: "",
@@ -40,10 +41,15 @@ const Register = () => {
     const { password, confirmPassword } = formData;
 
     // 1. required fields
-    if (!formData.name || !formData.email || !password || !confirmPassword) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.mobile ||
+      !password ||
+      !confirmPassword
+    ) {
       return toast.error("All fields are required");
     }
-
     // 2. password length check
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
@@ -53,6 +59,12 @@ const Register = () => {
       }, 400);
       return;
     }
+
+    const mobileRegex = /^[0-9]{10}$/;
+
+if (!mobileRegex.test(formData.mobile)) {
+  return toast.error("Enter valid 10 digit mobile number");
+}
 
     // 3. match validation (IMPORTANT)
     if (password !== confirmPassword) {
@@ -129,6 +141,28 @@ const Register = () => {
             />
           </div>
 
+          {/* Mobile Number */}
+          <div>
+            <label className="text-xs sm:text-sm text-gray-400">
+              Mobile Number
+            </label>
+
+            <input
+              type="tel"
+              max={10}
+              name="mobile"
+              onChange={handleChange}
+              placeholder="Enter your mobile number"
+              className="
+      w-full mt-1 px-3 sm:px-4 py-2 
+      bg-gray-900 border border-gray-700 
+      rounded-lg text-sm sm:text-base
+      focus:outline-none focus:ring-2 focus:ring-white 
+      transition
+    "
+            />
+          </div>
+
           {/* Role Dropdown */}
           <div>
             <label className="text-xs sm:text-sm text-gray-400">
@@ -191,7 +225,7 @@ const Register = () => {
           {/* Button */}
           <button
             type="submit"
-            className="
+            className=" 
               w-full 
               bg-white text-black 
               py-2 sm:py-3 
@@ -199,7 +233,7 @@ const Register = () => {
               text-sm sm:text-base 
               font-medium 
               hover:bg-gray-200 
-              transition
+              transition 
             "
           >
             Register

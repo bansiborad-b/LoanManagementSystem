@@ -10,7 +10,7 @@ const useAuthCheck = () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const publicRoutes = ["/", "/login", "/register", "/forgot", "/about", "/reset-password"];
+    const publicRoutes = ["/", "/login", "/register", "/forgot", "/about", "/reset-password", "/mobile-login"];
     
     const isPublicRoute = location.pathname.startsWith("/reset-password") || publicRoutes.includes(location.pathname);
 

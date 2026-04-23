@@ -5,10 +5,11 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Schemes from "./pages/Schemes";
-import Consultancy from "./pages/Consultancy";
-import LoanHub from "./pages/LoanHub";
-import Budgeting from "./pages/Budgeting";
+import Schemes from "./pages/user/Schemes";
+
+import Consultancy from "./pages/user/Consultancy";
+import LoanHub from "./pages/user/LoanHub";
+import Budgeting from "./pages/user/Budgeting";
 import About from "./pages/About";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
@@ -21,6 +22,7 @@ import SmartRedirect from "./routes/smartRedirect";
 import UserPanel from "./pages/user/UserPanel";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
+import MobileLogin from "./pages/MobileLogin";
 
 function App() {
   console.log("Auth Check Running");
@@ -54,6 +56,11 @@ function App() {
               <Login />
             </AuthRoute>
           }
+        />
+
+        <Route
+          path="/mobile-login"
+          element={<MobileLogin />}
         />
 
         <Route

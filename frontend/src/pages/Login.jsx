@@ -4,10 +4,11 @@ import { loginUser } from "../api/authApi";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { GoogleLogin } from "@react-oauth/google";
+import GoogleAuthButton from "../components/auth/GoogleAuthButton";
+import MobileLoginButton from "../components/auth/MobileLoginButton";
 
 const Login = () => {
-
-  
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -183,6 +184,15 @@ const Login = () => {
             OR
           </span>
           <div className="flex-1 h-px bg-gray-700"></div>
+        </div>
+        {/* Google */}
+        <div className="flex items-center justify-center gap-6 mt-4">
+          <GoogleAuthButton />
+        </div>
+
+        <div className="flex items-center justify-center gap-6 my-4">
+
+        <MobileLoginButton onClick={() => navigate("/mobile-login")} />
         </div>
 
         {/* Register */}
