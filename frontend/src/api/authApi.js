@@ -14,3 +14,18 @@ export const loginUser = (data) => {
 export const logoutUser = () => {
     return API.post("/auth/logout")
 }
+
+// 🔐 FORGOT PASSWORD
+export const forgotPassword = (email) => {
+  return API.post("/auth/forgot-password", { email });
+};
+
+// 🔐 RESET PASSWORD
+export const resetPassword = (token, password) => {
+  return API.post(`/auth/reset-password/${token}`, { password });
+};
+
+// 🔄 REFRESH TOKEN (optional helper)
+export const refreshToken = () => {
+  return API.post("/auth/refresh");
+};

@@ -11,20 +11,21 @@ import LoanHub from "./pages/LoanHub";
 import Budgeting from "./pages/Budgeting";
 import About from "./pages/About";
 import ForgotPassword from "./pages/ForgotPassword";
-
+import ResetPassword from "./pages/ResetPassword";
 
 import AuthRoute from "./routes/AuthRoute";
 import ProtectedRoute from "./routes/ProtectRoute";
 import useAuthCheck from "./hooks/useAuthCheck";
 import useLastPage from "./hooks/useLastPage";
 import SmartRedirect from "./routes/smartRedirect";
-
+import UserPanel from "./pages/user/UserPanel";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManagerDashboard from "./pages/manager/ManagerDashboard";
 
 function App() {
-
-  console.log("Auth Check Running",)
-  useLastPage()  
-  useAuthCheck()
+  console.log("Auth Check Running");
+  useLastPage();
+  useAuthCheck();
   return (
     <>
       <Toaster
@@ -73,11 +74,22 @@ function App() {
           }
         />
 
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
         {/* Protected pages (only after login) */}
+        <Route
+          path="/user"
+          element={
+            <ProtectedRoute allowedRoles={["User"]}>
+              <UserPanel />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/schemes"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["User"]}>
               <Schemes />
             </ProtectedRoute>
           }
@@ -86,7 +98,7 @@ function App() {
         <Route
           path="/consultancy"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["User"]}>
               <Consultancy />
             </ProtectedRoute>
           }
@@ -95,24 +107,45 @@ function App() {
         <Route
           path="/loan-hub"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["User"]}>
               <LoanHub />
             </ProtectedRoute>
           }
         />
-       
-       <Route path="*" element={<SmartRedirect />} />
 
         <Route
           path="/budgeting"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["User"]}>
               <Budgeting />
             </ProtectedRoute>
           }
         />
+
+        {/* ADMIN ROUTES */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* MANAGER ROUTES */}
+        <Route
+          path="/manager"
+          element={
+            <ProtectedRoute allowedRoles={["Manager"]}>
+              <ManagerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* FALLBACK */}
+        <Route path="*" element={<SmartRedirect />} />
       </Routes>
-      </>
+    </>
   );
 }
 

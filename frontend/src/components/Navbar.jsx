@@ -19,35 +19,63 @@ const Navbar = () => {
       toast.success("Logout Successful");
 
       navigate("/");
-
     } catch (err) {
       toast.error("Logout Failed");
       console.log(err);
     }
   };
 
-  const menuItems = user
-    ? [
-        { name: "Schemes", path: "/schemes" },
-        { name: "Consultancy", path: "/consultancy" },
-        { name: "Budgeting", path: "/budgeting" },
-        { name: "Loan Hub", path: "/loan-hub" },
-        { name: "About Us", path: "/about" },
-      ]
-    : [
-        { name: "Home", path: "/" },
-        { name: "Schemes", path: "/schemes" },
-        { name: "Consultancy", path: "/consultancy" },
-        { name: "Budgeting", path: "/budgeting" },
-        { name: "Loan Hub", path: "/loan-hub" },
-        { name: "About Us", path: "/about" },
-      ];
+  const handleProtectedNavigation = (path) => {
+    if (!user) {
+      toast.error("Please login first");
+      navigate("/login");
+      return;
+    }
+
+    navigate(path);
+  };
+
+  const publicRoutes = ["/", "/about"];
+
+  let menuItems = [];
+
+  if (!user) {
+    menuItems = [
+      { name: "Home", path: "/" },
+      { name: "Schemes", path: "/schemes" },
+      { name: "Consultancy", path: "/consultancy" },
+      { name: "Budgeting", path: "/budgeting" },
+      { name: "Loan Hub", path: "/loan-hub" },
+      { name: "About Us", path: "/about" },
+    ];
+  } else if (user.role === "User") {
+    menuItems = [
+      { name: "Schemes", path: "/schemes" },
+      { name: "Consultancy", path: "/consultancy" },
+      { name: "Budgeting", path: "/budgeting" },
+      { name: "Loan Hub", path: "/loan-hub" },
+      { name: "About Us", path: "/about" },
+    ];
+  } else if (user.role === "Admin") {
+    menuItems = [
+      { name: "Admin Panel", path: "/admin" },
+      { name: "About Us", path: "/about" },
+    ];
+  } else if (user.role === "Manager") {
+    menuItems = [
+      { name: "Manager Panel", path: "/manager" },
+      { name: "About Us", path: "/about" },
+    ];
+  }
 
   return (
     <nav className="sticky top-0 z-50 bg-black text-white border-b border-gray-800">
       <div className="max-w-8xl mx-auto px-4 md:px-14 py-3 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3 hover:scale-105 transition-transform duration-200">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 hover:scale-105 transition-transform duration-200"
+        >
           <img
             src={logo}
             alt="FinTech"
@@ -58,28 +86,38 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden xl:flex space-x-[60px] text-base relative">
-          {menuItems.map((item) => (
-            <NavLink key={item.name} to={item.path} className="relative group hover:scale-105 transition-transform duration-200">
-              {({ isActive }) => (
-                <>
-                  <span
-                    className={` hover:scale-105 transition-transform duration-200 ${
-                      isActive ? "text-white" : "text-gray-300"
-                    }`}
-                  >
-                    {item.name}
-                  </span>
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.path;
 
-                  {/* Animated Underline */}
-                  <span
-                    className={`absolute left-0 -bottom-1 h-[2px] bg-white transition-all duration-300 ${
-                      isActive ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
-                  ></span>
-                </>
-              )}
-            </NavLink>
-          ))}
+            return (
+              <div
+                key={item.name}
+                onClick={() => {
+                  if (publicRoutes.includes(item.path)) {
+                    navigate(item.path);
+                  } else {
+                    handleProtectedNavigation(item.path);
+                  }
+                }}
+                className="relative group cursor-pointer hover:scale-105 transition-transform duration-200"
+              >
+                <span
+                  className={`hover:scale-105 transition-transform duration-200 ${
+                    isActive ? "text-white" : "text-gray-300"
+                  }`}
+                >
+                  {item.name}
+                </span>
+
+                {/* Animated Underline */}
+                <span
+                  className={`absolute left-0 -bottom-1 h-[2px] bg-white transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </div>
+            );
+          })}
         </div>
         {/* Desktop Buttons */}
         <div className="hidden xl:flex space-x-4">
@@ -119,9 +157,17 @@ const Navbar = () => {
       {isOpen && (
         <div className="xl:hidden bg-black border-t border-gray-800 px-4 py-4 space-y-4 text-center">
           {menuItems.map((item) => (
-            <NavLink
+            <div
               key={item.name}
-              to={item.path}
+              onClick={() => {
+                setIsOpen(false);
+
+                if (publicRoutes.includes(item.path)) {
+                  navigate(item.path);
+                } else {
+                  handleProtectedNavigation(item.path);
+                }
+              }}
               className={({ isActive }) =>
                 `block ${
                   isActive ? "text-white font-semibold" : "text-gray-400"
@@ -129,7 +175,7 @@ const Navbar = () => {
               }
             >
               {item.name}
-            </NavLink>
+            </div>
           ))}
 
           {user ? (
@@ -160,3 +206,14 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// const handleServiceClick = (path) => {
+//   const user = JSON.parse(localStorage.getItem("user"));
+
+//   if (!user) {
+//     toast.error("Please login first");
+//     navigate("/home");
+//   } else {
+//     navigate(path);
+//   }
+// };

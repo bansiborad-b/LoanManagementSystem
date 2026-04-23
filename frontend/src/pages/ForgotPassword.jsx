@@ -2,8 +2,38 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import toast from "react-hot-toast"
+import axios from "axios";
+import { useState } from "react";
+import { forgotPassword } from "../api/authApi";
 
 const ForgotPassword = () => {
+
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      const response = await forgotPassword(email);
+
+      if (response.data.success) {
+        toast.success("Reset link send on your Email!");
+      } else {
+        toast.error("Try again later!");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };  
+
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
       
@@ -38,7 +68,7 @@ const ForgotPassword = () => {
         </p>
 
         {/* Form */}
-        <form className="space-y-4 sm:space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           
           {/* Email */}
           <div>
@@ -48,6 +78,8 @@ const ForgotPassword = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="
                 w-full mt-1 px-3 sm:px-4 py-2 
                 bg-gray-900 border border-gray-700 
@@ -62,6 +94,7 @@ const ForgotPassword = () => {
           {/* Button */}
           <button
             type="submit"
+              disabled={loading}
             className="
               w-full 
               bg-white text-black 
@@ -73,7 +106,7 @@ const ForgotPassword = () => {
               transition
             "
           >
-            Send Reset Link
+           {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 

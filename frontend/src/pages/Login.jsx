@@ -2,60 +2,78 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { loginUser } from "../api/authApi";
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
 
-  const navigate = useNavigate()
+  
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  
-    useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user"))
-  
-      if(user){
-        navigate("/schemes")
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+      if (user.role === "Admin") {
+        navigate("/admin", { replace: true });
+      } else if (user.role === "Manager") {
+        navigate("/manager", { replace: true });
+      } else {
+        navigate("/schemes", { replace: true });
       }
-    }, [])
+    }
+  }, []);
 
-  const [formData, setFormData ] = useState({
-    email : "",
-    password : ""
-  })
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
-      ...formData, 
-      [e.target.name] : e.target.value
-    })
-  }
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await loginUser(formData);
+    try {
+      const res = await loginUser(formData);
 
-    // 🔥 If backend sends redirect, interceptor handles it
-    if (res.data.redirect) return;
+      // 🔥 If backend sends redirect, interceptor handles it
+      if (res.data.redirect) return;
 
-    // Safety check
-    if (!res.data?.accessToken) {
-      toast.error("Login failed");
-      return;
+      // Safety check
+      if (!res.data?.accessToken) {
+        toast.error("Login failed");
+        return;
+      }
+
+      // Store data
+      localStorage.setItem("token", res.data.accessToken);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // toast.success("Login Successful");
+      // navigate("/schemes");
+
+      toast.success("Login Successful");
+
+      const role = res.data.user.role;
+
+      if (role === "Admin") {
+        navigate("/admin");
+      } else if (role === "Manager") {
+        navigate("/manager");
+      } else {
+        navigate("/schemes");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login Failed");
     }
-
-    // Store data
-    localStorage.setItem("token", res.data.accessToken);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    toast.success("Login Successful");
-    navigate("/schemes");
-
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Login Failed");
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 sm:px-6 lg:px-8 ">
@@ -108,12 +126,13 @@ const handleSubmit = async (e) => {
           {/* Password */}
           <div>
             <label className="text-xs sm:text-sm text-gray-400">Password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              placeholder="Enter your password"
-              className="
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                onChange={handleChange}
+                placeholder="Enter your password"
+                className="
                 w-full mt-1 px-3 sm:px-4 py-2 
                 bg-gray-900 border border-gray-700 
                 rounded-lg 
@@ -121,7 +140,15 @@ const handleSubmit = async (e) => {
                 focus:outline-none focus:ring-2 focus:ring-white 
                 transition
               "
-            />
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           {/* Forgot Password */}

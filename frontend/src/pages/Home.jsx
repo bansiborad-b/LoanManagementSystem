@@ -19,12 +19,18 @@ const Home = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
 
-    if (user) {
+  if (user) {
+    if (user.role === "Admin") {
+      navigate("/admin");
+    } else if (user.role === "Manager") {
+      navigate("/manager");
+    } else {
       navigate("/schemes");
     }
-  }, []);
+  }
+}, []);
 
   const handleProtectedNavigation = (path) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -46,6 +52,12 @@ const handleServiceClick = (path) => {
   } else {
     navigate(path);
   }
+};
+
+const aboutNavigate = (path) => {
+  
+    navigate(path);
+ 
 };
 
   const faqData = [
@@ -246,7 +258,7 @@ const handleServiceClick = (path) => {
               Get Started
             </button>
 
-            <button
+            <button onClick={() => aboutNavigate("/about")}
               className="border border-black px-10 py-3 rounded-lg font-medium 
     hover:bg-black hover:text-white 
     active:scale-95 

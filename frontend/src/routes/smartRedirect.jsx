@@ -5,7 +5,7 @@ const SmartRedirect = () => {
   const lastPage = localStorage.getItem("lastPage");
 
   if (token) {
-    return <Navigate to={lastPage || "/schemes"} replace />;
+    return <Navigate to={lastPage} replace />;
   }
 
   return <Navigate to="/login" replace />;

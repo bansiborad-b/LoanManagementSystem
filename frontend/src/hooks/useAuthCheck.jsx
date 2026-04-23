@@ -10,10 +10,12 @@ const useAuthCheck = () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const publicRoutes = ["/", "/login", "/register", "/forgot", "/about"];
+    const publicRoutes = ["/", "/login", "/register", "/forgot", "/about", "/reset-password"];
+    
+    const isPublicRoute = location.pathname.startsWith("/reset-password") || publicRoutes.includes(location.pathname);
 
     // ✅ Skip public routes completely
-    if (publicRoutes.includes(location.pathname)) return;
+    if (isPublicRoute) return;
 
     // ❌ If auth broken
     if (!token || !user) {
